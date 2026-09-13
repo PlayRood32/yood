@@ -55,38 +55,96 @@ Current app version: `0.2.0`
 ## 🗂️ Project Layout
 
 ```text
-├── 📁 shared
-│   ├── 📁 extension/yood
-│   │   ├── 📄 manifest.json
-│   │   ├── 📄 content.js
-│   │   └── 📄 rules.json
-│   ├── 📁 filters
-│   │   └── 📄 default.txt
-│   └── 📁 frontend
-│       ├── 📄 bootstrap.ts
-│       ├── 📄 injection.ts
-│       ├── 📄 player.ts
-│       └── 📁 dist
 ├── 📁 linux
-│   ├── 📁 src-tauri
-│   │   ├── 🦀 src/browser.rs
-│   │   ├── 🦀 src/commands.rs
-│   │   ├── 🦀 src/lib.rs
-│   │   └── 📄 tauri.conf.json
 │   ├── 📁 scripts
-│   │   ├── ⚙️ fetch-brave.sh
-│   │   ├── ⚙️ prepare-binaries.sh
-│   │   ├── ⚙️ install.sh
-│   │   └── ⚙️ lock-devtools.sh
-│   └── ⚙️ run.sh
-├── 📁 windows
+│   │   ├── 🐚 fetch-brave.sh
+│   │   ├── 🐚 install.sh
+│   │   ├── 🐚 lock-devtools.sh
+│   │   └── 🐚 prepare-binaries.sh
 │   ├── 📁 src-tauri
-│   │   └── 📄 tauri.conf.json
-│   └── 📁 scripts
-│       └── ⚙️ build-windows.ps1
-├── 📄 CHANGES.md
-├── 📄 Yood_Technical_Specification.md
-└── 📖 README.md
+│   │   ├── 📁 capabilities
+│   │   │   └── ⚙️ default.json
+│   │   ├── 📁 gstreamer
+│   │   │   ├── 🔧 libgstautodetect.so
+│   │   │   └── 🔧 libgstpipewire.so
+│   │   ├── 📁 icons
+│   │   │   ├── 🖼️ icon.ico
+│   │   │   ├── 🖼️ icon.png
+│   │   │   └── 🖼️ icon.svg
+│   │   ├── 📁 src
+│   │   │   ├── 🦀 browser.rs
+│   │   │   ├── 🦀 commands.rs
+│   │   │   ├── 🦀 desktop.rs
+│   │   │   ├── 🦀 download.rs
+│   │   │   ├── 🦀 error.rs
+│   │   │   ├── 🦀 filtering.rs
+│   │   │   ├── 🦀 lib.rs
+│   │   │   ├── 🦀 logging.rs
+│   │   │   ├── 🦀 main.rs
+│   │   │   ├── 🦀 models.rs
+│   │   │   ├── 🦀 process.rs
+│   │   │   ├── 🦀 secure.rs
+│   │   │   ├── 🦀 security.rs
+│   │   │   ├── 🦀 settings.rs
+│   │   │   └── 🦀 updates.rs
+│   │   ├── 🦀 build.rs
+│   │   ├── 📦 Cargo.lock
+│   │   ├── 📦🦀 Cargo.toml
+│   │   └── ⚙️ tauri.conf.json
+│   ├── 📖 README.md
+│   └── 🐚 run.sh
+├── 📁 shared
+│   ├── 📁 extension
+│   │   └── 📁 yood
+│   │       ├── 🟨 content.js
+│   │       ├── 🌐 manifest.json
+│   │       └── ⚙️ rules.json
+│   ├── 📁 filters
+│   │   └── 📝 default.txt
+│   ├── 📁 frontend
+│   │   ├── 🟦 bootstrap.ts
+│   │   ├── 🌐 index.html
+│   │   ├── 🟦 injection.ts
+│   │   ├── 📦 package-lock.json
+│   │   ├── 📦 package.json
+│   │   ├── 🌐 player.html
+│   │   ├── 🟦 player.ts
+│   │   └── ⚙️🟦 tsconfig.json
+│   └── 📖 README.md
+├── 📁 windows
+│   ├── 📁 scripts
+│   │   └── 🪟 build-windows.ps1
+│   ├── 📁 src-tauri
+│   │   ├── 📁 capabilities
+│   │   │   └── ⚙️ default.json
+│   │   ├── 📁 icons
+│   │   │   ├── 🖼️ icon.ico
+│   │   │   ├── 🖼️ icon.png
+│   │   │   └── 🖼️ icon.svg
+│   │   ├── 📁 src
+│   │   │   ├── 🦀 browser.rs
+│   │   │   ├── 🦀 commands.rs
+│   │   │   ├── 🦀 desktop.rs
+│   │   │   ├── 🦀 download.rs
+│   │   │   ├── 🦀 error.rs
+│   │   │   ├── 🦀 filtering.rs
+│   │   │   ├── 🦀 lib.rs
+│   │   │   ├── 🦀 logging.rs
+│   │   │   ├── 🦀 main.rs
+│   │   │   ├── 🦀 models.rs
+│   │   │   ├── 🦀 process.rs
+│   │   │   ├── 🦀 secure.rs
+│   │   │   ├── 🦀 security.rs
+│   │   │   ├── 🦀 settings.rs
+│   │   │   └── 🦀 updates.rs
+│   │   ├── 🦀 build.rs
+│   │   ├── 📦 Cargo.lock
+│   │   ├── 📦🦀 Cargo.toml
+│   │   └── ⚙️ tauri.conf.json
+│   └── 📖 README.md
+├── 📝 CHANGES.md
+├── 📖 README.md
+└── 📝 Yood_Technical_Specification.md
 ```
 
 - `shared/` is the single source of truth for the extension, filters, and frontend. Both `linux/src-tauri` and `windows/src-tauri` reference it via `../../shared/...`.
@@ -113,11 +171,49 @@ Build:
 - Tauri Linux deps (WebKitGTK, etc.)
 - `curl`, `unzip`, `sha256sum` for Brave/binary staging
 
-On Arch Linux, install the WebKit/GStreamer runtime used by YouTube before launching Yood:
+#### linux:
+
+install the WebKit/GStreamer runtime used by YouTube before launching Yood:
+
+<details>
+
+<summary><b>Arch Linux</b></summary>
 
 ```bash
 sudo pacman -S --needed webkit2gtk-4.1 gst-plugins-base gst-plugins-good gst-libav pipewire
 ```
+
+</details>
+
+<details>
+
+<summary><b>Debian</b></summary>
+
+```bash
+sudo apt install webkit2gtk-4.1 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-libav pipewire
+```
+
+</details>
+
+<details>
+
+<summary><b>Fedora</b></summary>
+
+```bash
+sudo dnf install webkit2gtk4.1 gstreamer1-plugins-base gstreamer1-plugins-good gstreamer1-libav pipewire
+```
+
+</details>
+
+<details>
+
+<summary><b>Gentoo</b></summary>
+
+```bash
+sudo emerge --ask net-libs/webkit-gtk media-libs/gst-plugins-base media-plugins/gst-plugins-good media-plugins/gst-plugins-libav media-video/pipewire
+```
+
+</details>
 
 ### 🛠️ Building from Source
 
