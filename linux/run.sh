@@ -7,7 +7,7 @@
 #   dev            Run in development mode (frontend build + cargo tauri dev)
 #   run            Run the already-built release binary (no compilation)
 #   build          Alias for build-linux
-#   build-linux    Compile for Linux (asks: bin / appimage / deb / rpm)
+#   build-linux    Compile for Linux (TUI: Arch/Debian/Fedora, Space=select, Enter=build)
 #   build-linux-run Build for Linux, then run the release binary
 #   brave          Launch YouTube in Brave app mode (stable engine + Shields)
 #   check          Type-check frontend + cargo check (no bundle)
@@ -64,40 +64,48 @@ cmd_run() {
 }
 
 pick_build_targets() {
-  # Prints chosen targets, one per line. Empty input in a terminal opens a
-  # checklist; without a terminal it defaults to a plain runnable binary.
-  if [[ $# -eq 0 && -t 0 && -t 1 ]]; then
+  # Prints internal targets (bin/deb/rpm/appimage), one per line.
+  # No args in a terminal opens a checklist: Space toggles, Enter starts.
+  # NOTE: stdout is captured via $(...) by the caller, so test stderr (-t 2),
+  # not stdout (-t 1), for "interactive terminal".
+  if [[ $# -eq 0 && -t 0 && -t 2 ]]; then
     if command -v whiptail >/dev/null 2>&1; then
       local choice
       choice=$(whiptail --title "Yood build for Linux" --checklist \
-        "Space toggles, Enter confirms (Esc cancels):" 20 72 5 \
-        "bin" "Runnable binary (Arch: use this)" ON \
-        "appimage" "Portable AppImage (needs mksquashfs)" OFF \
-        "deb" "Debian / Ubuntu package" OFF \
-        "rpm" "Fedora package" OFF \
+        "Space = select, Enter = start build (Esc cancels):" 15 60 3 \
+        "arch" "Arch" OFF \
+        "debian" "Debian" OFF \
+        "fedora" "Fedora" OFF \
         3>&1 1>&2 2>&3) || return 1
       # shellcheck disable=SC2206
-      local picked=(${choice//\"/})
-      [[ "${#picked[@]}" -gt 0 ]] || return 1
-      printf '%s\n' "${picked[@]}"
+      local picked=(${choice//\"/}) mapped=() p
+      for p in "${picked[@]}"; do
+        case "${p}" in
+          arch) mapped+=(bin) ;;
+          debian) mapped+=(deb) ;;
+          fedora) mapped+=(rpm) ;;
+          *) mapped+=("${p}") ;;
+        esac
+      done
+      [[ "${#mapped[@]}" -gt 0 ]] || return 1
+      printf '%s\n' "${mapped[@]}"
       return 0
     fi
-    echo "Choose build targets (e.g. '1 3', empty cancels):" >&2
-    echo "  1) bin       Runnable binary (Arch: use this)" >&2
-    echo "  2) appimage  Portable AppImage (needs mksquashfs)" >&2
-    echo "  3) deb       Debian / Ubuntu package" >&2
-    echo "  4) rpm       Fedora package" >&2
-    local answer names=(bin appimage deb rpm) n picked=()
+    echo "Choose build targets (e.g. '1 2', empty cancels, Esc/Ctrl-C cancels):" >&2
+    echo "  1) Arch    (runnable binary, no installer)" >&2
+    echo "  2) Debian  (.deb)" >&2
+    echo "  3) Fedora  (.rpm)" >&2
+    local answer names=(bin deb rpm) n picked=()
     read -r -p "> " answer || return 1
     for n in ${answer}; do
-      if [[ "${n}" =~ ^[1-4]$ ]]; then picked+=("${names[$((n-1))]}"); fi
+      if [[ "${n}" =~ ^[1-3]$ ]]; then picked+=("${names[$((n-1))]}"); fi
     done
     [[ "${#picked[@]}" -gt 0 ]] || return 1
     printf '%s\n' "${picked[@]}"
     return 0
   fi
   if [[ $# -eq 0 ]]; then
-    echo bin
+    printf '%s\n' bin deb rpm
     return 0
   fi
   printf '%s\n' "$@"
@@ -108,6 +116,14 @@ cmd_build_linux() {
   local targets=() passthrough=() seen_sep=false arg
   for arg in "$@"; do
     if ! $seen_sep && [[ "${arg}" == "--" ]]; then seen_sep=true; continue; fi
+    if ! $seen_sep && [[ "${arg}" == "all" || "${arg}" == "--all" ]]; then
+      targets+=(bin deb rpm); continue
+    fi
+    case "${arg}" in
+      arch) if ! $seen_sep; then targets+=(bin); continue; fi ;;
+      debian) if ! $seen_sep; then targets+=(deb); continue; fi ;;
+      fedora) if ! $seen_sep; then targets+=(rpm); continue; fi ;;
+    esac
     if ! $seen_sep && [[ "${arg}" =~ ^(bin|appimage|deb|rpm)$ ]]; then
       targets+=("${arg}"); continue
     fi
