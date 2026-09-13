@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Yood Downloads",
+  "version": "0.3.0",
+  "description": "Adds Yood download buttons to YouTube (including Shorts) and blocks YouTube ad requests. Clicking Download hands the video to the Yood desktop app.",
+  "permissions": ["declarativeNetRequest"],
+  "host_permissions": [
+    "https://*.youtube.com/*",
+    "https://youtu.be/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "yood-ads",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.youtube.com/*",
+        "https://youtu.be/*",
+        "https://*.youtube-nocookie.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ]
+}

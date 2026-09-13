@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Yood",
+  "version": "0.2.0",
+  "identifier": "com.playrood.yood",
+  "build": {
+    "beforeDevCommand": "npm run build --prefix ../../shared/frontend",
+    "beforeBuildCommand": "npm run build --prefix ../../shared/frontend",
+    "frontendDist": "../../shared/frontend/dist"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "security": {
+      "assetProtocol": { "enable": true, "scope": ["$APPDATA/**", "$DOWNLOAD/**", "$TEMP/**"] },
+      "capabilities": ["default"]
+    },
+    "windows": []
+  },
+  "plugins": {
+    "deep-link": {
+      "desktop": {
+        "schemes": ["yood"]
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["appimage", "deb"],
+    "resources": ["binaries", "gstreamer", "../../shared/filters/default.txt", "../../shared/extension"],
+    "icon": ["icons/icon.svg", "icons/icon.png", "icons/icon.ico"]
+  }
+}

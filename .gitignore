@@ -1,0 +1,12 @@
+# Rust / Tauri
+**/target/
+**/gen/
+**/binaries/*
+!**/binaries/.gitkeep
+
+# Frontend
+**/node_modules/
+
+# Logs / OS
+*.log
+.DS_Store

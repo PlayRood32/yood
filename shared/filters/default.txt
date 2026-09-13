@@ -1,0 +1,37 @@
+! Yood's conservative built-in rules. Remote lists are cached separately.
+! Network rules below only cover dedicated ad/tracking hosts — never content
+! CDNs (googlevideo.com, ytimg.com, gstatic.com), so a false positive can at
+! worst hide an element, never break playback.
+||doubleclick.net^
+||googleadservices.com^
+||googlesyndication.com^
+||googleads.g.doubleclick.net^
+||tpc.googlesyndication.com^
+||pagead2.googlesyndication.com^
+||static.doubleclick.net^
+||adservice.google.com^
+||jnn-pa.googleapis.com^
+||youtube.com/pagead^
+||youtube.com/ptracking^
+||youtube.com/api/stats/ads
+||youtube.com/get_midroll_info
+||youtube.com/ad_break
+youtube.com##ytd-ad-slot-renderer
+youtube.com##ytd-in-feed-ad-layout-renderer
+youtube.com##ytd-display-ad-renderer
+youtube.com##ytd-banner-promo-renderer
+youtube.com##ytd-promoted-video-renderer
+youtube.com##ytd-compact-promoted-video-renderer
+youtube.com##ytd-promoted-sparkles-web-renderer
+youtube.com##ytd-promoted-sparkles-text-search-renderer
+youtube.com##ytd-statement-banner-renderer
+youtube.com##ytd-companion-slot-renderer
+youtube.com##ytd-action-companion-ad-renderer
+youtube.com##ytd-player-legacy-desktop-watch-ads-renderer
+youtube.com###player-ads
+youtube.com###masthead-ad
+youtube.com##.ytp-ad-module
+youtube.com##.ytp-ad-overlay-container
+youtube.com##.ytp-ad-player-overlay
+youtube.com##.ytp-ad-text
+youtube.com##.video-ads
